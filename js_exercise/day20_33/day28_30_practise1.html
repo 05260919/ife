@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+        li:hover{
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <input id="email-input" type="text">
+        <ul id="email-sug-wrapper" class="email-sug"></ul>
+
+    </div>
+    <script>
+        var postfixList = ['163.com', 'gmail.com', '126.com', 'qq.com', '263.net'];
+        var input = document.getElementById('email-input');
+
+        input.focus();
+        var inputText;
+        var ul = document.getElementById('email-sug-wrapper');
+        var li = [];
+
+        var choose;
+        var beforeAt;
+        var afterAt;
+        var activeli = [];
+
+
+        function makeLis() {
+
+            for (var i = 0; i < postfixList.length; i++) {
+                li[i] = document.createElement('li');
+                li[i].style.display='none';
+                ul.appendChild(li[i]);
+            }
+         //   choose = li[0];
+
+        }
+        makeLis();
+
+    
+
+
+        var UP = 38, DOWN = 40, ENTER = 13, ESC = 27;
+        input.onkeydown = function () {
+           
+            if (event.keyCode == UP) {
+                console.log('按下了上键');
+                clearcolor();
+                if (choose == activeli[0]) {
+                    choose = activeli[activeli.length - 1];
+                }
+                else {
+                    for (var i = 1; i < activeli.length; i++) {
+                        if (choose == activeli[i]) {
+                            choose = activeli[i - 1];
+                            break;
+                        }
+                    }
+                }
+                showchooseitem();
+
+            }
+            else if (event.keyCode == DOWN) {
+                console.log('按下了下键');
+                clearcolor();
+                if (choose == activeli[activeli.length - 1]) {
+                    choose = activeli[0];
+                }
+                else {
+                    for (var i = 0; i < activeli.length - 1; i++) {
+                        if (choose == activeli[i]) {
+                            choose = activeli[i + 1];
+                            break;
+                        }
+                    }
+                }
+                showchooseitem();
+            }
+            else if (event.keyCode == ENTER) {
+                console.log('按下了enter键');
+                clearcolor();
+                input.value = choose.textContent;
+                choose=activeli[0];
+               for(var i=0;i<li.length;i++){
+                li[i].style.display = "none";
+               }
+            }
+            else if (event.keyCode == ESC) {
+                console.log('按下了esc键');
+                input.select();
+            }
+            // choose=li[0];
+            // resetColor();
+        }
+
+        input.oninput = function () {
+            // console.log('正在输入...');
+         
+            var spottxt = getInput();
+            //clearcolor();
+            if (spottxt) {
+             
+                // createItems(spottxt);
+                generateHints(spottxt);
+            }
+            else {
+                for (var i = 0; i < li.length; i++) {
+                    li[i].style.display = "none";
+                }
+            }
+
+           activeli=findActiveli();
+     //      console.log(activeli);
+            choose = activeli[0];
+            resetColor();
+
+        }
+
+        function getInput() {
+            var spottxt = input.value.trim();
+            return spottxt;
+        }
+
+        function generateHints(a) {
+            var flag = hasAt(a);
+
+            var spottxt = beforeAt;
+            // var hints = [];
+
+            if (afterAt == '') {
+                for (var i = 0; i < postfixList.length; i++) {
+                    show(li[i]);
+                    li[i].textContent = spottxt + '@' + postfixList[i];
+                }
+            }
+            else {
+                var flag=0;
+                for (var i = 0; i < postfixList.length; i++) {
+                    if (afterAt === postfixList[i].slice(0, afterAt.length)) {
+                        show(li[i]);
+                        li[i].textContent = spottxt + '@' + postfixList[i];
+                        flag=1;
+                    }
+                    else {
+                        hidden(li[i]);
+                    }
+                }
+                if(flag===0){
+                    for (var i = 0; i < postfixList.length; i++) {
+                    show(li[i]);
+                    li[i].textContent = spottxt + '@' + postfixList[i];
+                }
+                }
+
+
+            }
+            
+
+        }
+      
+        function hidden(a) {
+            a.style.display = 'none';
+        }
+        function show(a) {
+            a.style.display = 'block';
+        }
+        function showchooseitem() {
+            if (choose) {
+                choose.style.backgroundColor = 'green';
+            }
+        }
+        function clearcolor() {
+            choose.style.backgroundColor = '';
+        //    for(var i=0;i<activeli.length;i++){
+        //        activeli[i].style.backgroundColor='';
+        //    }
+        }
+        function hasAt(a) {
+            var index = a.indexOf('@');
+
+            if (index != -1) {
+                beforeAt = a.slice(0, index);
+                afterAt = a.slice(index+1);
+                return true;
+            }
+            else {
+                beforeAt = a;
+                afterAt = '';
+                return false;
+            }
+        }
+        function resetColor() {
+         //  console.log(activeli[0].style.backgroundColor);
+            if(activeli[0])
+            activeli[0].style.backgroundColor = 'green';
+        //    console.log(activeli[0].style.backgroundColor);
+            for (var i = 1; i < activeli.length; i++) {
+                activeli[i].style.backgroundColor = '';
+            }
+        }
+        function findActiveli() {
+            var active=[];
+            for (var i = 0; i < postfixList.length; i++) {
+                if (li[i].style.display != 'none') {
+                    active.push(li[i]);
+                }
+            
+            }
+          //  choose=activeli[0];
+          console.log(active);
+          return active;
+
+        }
+        ul.onclick=function(e){
+            input.value=e.target.textContent;
+            for(var i=0;i<li.length;i++){
+                li[i].style.display='none';
+            }
+            input.focus();
+        }
+
+
+        //转义
+        function htmlEncodeByRegExp(str){ 
+                 var s = "";
+                 if(str.length == 0) return "";
+                 s = str.replace(/&/g,"&");
+                 s = s.replace(/</g,"<");
+                 s = s.replace(/>/g,">");
+                 s = s.replace(/ /g," ");
+                 s = s.replace(/\'/g,"'");
+                 s = s.replace(/\"/g,'"');
+                 return s; 
+           }
+           /*4.用正则表达式实现html解码*/
+           function htmlDecodeByRegExp(str){ 
+                 var s = "";
+                 if(str.length == 0) return "";
+                 s = str.replace(/&/g,"&");
+                 s = s.replace(/</g,"<");
+                 s = s.replace(/>/g,">");
+                 s = s.replace(/ /g," ");
+                 s = s.replace(/'/g,"\'");
+                 s = s.replace(/"/g,"\"");
+                 return s; 
+           }
+    </script>
+</body>
+
+</html>

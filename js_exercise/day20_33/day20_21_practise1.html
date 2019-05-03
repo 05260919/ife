@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>
+            20到21天任务一  
+        </title>
+    </head>
+    <body>
+            <input id="name" type="text">    
+            <button id="submit-btn" >Submit</button>
+            <script>
+                var button=document.querySelector("#submit-btn");
+                var input=document.querySelector("#name");
+                 button.onclick=function(){
+		         console.log(input.value);
+                }
+                input.onkeydown=function(){
+                    if(event.keyCode==13)
+                    console.log(input.value);
+                    else if(event.keyCode==27)  
+                    input.value=" ";
+                }
+            
+            
+
+
+                
+            </script>
+    </body>
+</html>

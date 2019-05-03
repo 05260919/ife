@@ -1,0 +1,65 @@
+<html>
+<head>
+    <meta charset="UTF-8">    
+    <title>IFE ECMAScript</title>
+</head>
+<body>        
+    <input id="first-number" type="number" value="0" placeholder="第一个数字">
+    <input id="second-number" type="number" value="0" placeholder="第二个数字">
+    <button id="add-btn" onclick="add()" >加</button>
+    <button id="minus-btn "onclick="subtract()">减</button>
+    <button id="times-btn" onclick="multiply()">乘</button>
+    <button id="divide-btn"onclick="divide()">除</button>
+    <p id="result">运算结果</p>
+    <script>
+      
+     
+       function  add(){
+       
+                    var num1=parseFloat(document.getElementById('first-number').value);
+                    var num2=parseFloat(document.getElementById('second-number').value);
+                    var num3=num1+num2;
+                    document.getElementById('result').innerHTML=num3;
+            
+        
+             
+        }
+        function  subtract(){
+            var num1=parseFloat(document.getElementById('first-number').value);
+            var num2=parseFloat(document.getElementById('second-number').value);
+            var num3=num1-num2;
+             document.getElementById('result').innerHTML=num3;
+        }
+
+        function  multiply(){
+            var num1=parseFloat(document.getElementById('first-number').value);
+            var num2=parseFloat(document.getElementById('second-number').value);
+            var num3=num1*num2;
+             document.getElementById('result').innerHTML=num3;
+        }
+
+        function  divide(){
+            var num1=parseFloat(document.getElementById('first-number').value);
+            var num2=parseFloat(document.getElementById('second-number').value);
+            var num3=0;
+         
+            if(num2==0)
+            {
+              
+                document.getElementById('result').innerHTML='分母不符合条件'; 
+            
+            }
+             
+             else
+             {
+                 num3=num1/num2;
+                 document.getElementById('result').innerHTML=num3;
+             }
+        }
+
+
+
+    
+    </script>
+</body>
+</html>

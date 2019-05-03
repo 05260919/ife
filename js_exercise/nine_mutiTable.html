@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <title>
+            乘法表格
+        </title>
+        <link rel="stylesheet" href="nine_table.css">
+    </head>
+    <body>
+        <table id="multiply">
+            
+        </table>
+        <script>
+             function mutiPic(){
+                
+    var table = document.getElementById("multiply");
+    for (var i = 1; i <= 9; i++) {
+        // ?i?j?????????tr??
+        var new_tr = document.createElement("tr");
+        table.appendChild(new_tr);
+        for (var j = 1; j <= i; j++) {
+            var old_tr = document.getElementsByTagName("tr");
+            var length_tr = old_tr.length;
+            var new_td = document.createElement("td");
+            new_td.innerHTML = j + "*" + i + "=" + i * j;
+
+            old_tr[length_tr - 1].appendChild(new_td);
+        }
+        // ??tr??????????td???
+
+
+    }
+}
+    mutiPic();
+        </script>
+
+    </body>
+</html>

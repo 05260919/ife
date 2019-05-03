@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body id="main">
+<!--选择年份-->
+<select id="year-select"></select>
+<!--选择月份-->
+<select id="month-select"></select>
+<!--选择日-->
+<select id="day-select"></select>
+<!--选择小时-->
+<select id="hour-select"></select>
+<!--选择分钟-->
+<select id="minute-select"></select>
+<!--选择秒-->
+<select id="second-select"></select>
+<p id="result-wrapper">现在距离 2001年1月1日星期X HH:MM:SS 还有 X 天 X 小时 X 分 X 秒</p>
+
+<script>
+   
+    var year = document.getElementById('year-select');
+    var month = document.getElementById('month-select');
+    var day = document.getElementById('day-select');
+    var hour = document.getElementById('hour-select');
+    var minute = document.getElementById('minute-select');
+    var second = document.getElementById('second-select');
+    var result = document.getElementById('result-wrapper');
+    var body = document.getElementById('main');
+    var time = new Date();//设定时间
+    var  today=new Date();
+   body.onclick = function() {
+        myTime();
+    };
+
+         
+    //新建option
+    function createOptions(start,end,select){
+        for(var i=start;i<end;i++){
+            var option=document.createElement('option');
+            if(i<10){
+                i='0'+i;
+            }
+            option.setAttribute('value',i);
+            option.innerHTML=i;
+            select.appendChild(option);
+
+        }
+    }
+    //建立所有option选项
+    function createAll(){
+        createOptions(2000,2032,year);
+        createOptions(1,13,month);
+        createOptions(1,31,day);
+        createOptions(0,24,hour);
+        createOptions(0,60,minute);
+        createOptions(0,60,second);
+    }
+    createAll();
+
+    //选择
+    function chooseTime(op){
+        var options=op.querySelectorAll('option');
+        for(var i=0;i<options.length;i++){
+            if(options[i].selected){
+                return op.children[i].value;
+            }
+        }
+    }
+    function weekDay(d) {
+        var week = Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+        return week[d];
+    }
+    function setTime(year,month,day,hour,minute,second) {
+        time.setFullYear(year,month-1,day);
+        time.setHours(hour);
+        time.setMinutes(minute);
+        time.setSeconds(second);
+        return time;
+    }
+  
+    function myTime() {
+        chYear = chooseTime(year);
+        chMonth = chooseTime(month);
+        chDay = chooseTime(day);
+        chHour = chooseTime(hour);
+        chMinute = chooseTime(minute);
+        chSecond = chooseTime(second);
+        time = setTime(chYear,chMonth,chDay,chHour,chMinute,chSecond);
+        compare(time);
+    }
+
+    //现在的时间
+    function currTime(){
+        
+        currYear=today.getFullYear();
+         currMonth =today.getMonth();
+         currDay =today.getDate();
+         currHour=today.getHours();
+         currMinute=today.getMinutes();
+         currSecond=today.getSeconds();
+    }
+    
+
+    function checkTime(t) {
+        if(t<10) {
+            var i;
+            i = '0'+t;
+            return i;
+        }
+        else
+            return t;
+    }
+    
+
+  function compare(time) {
+        var currentTime = today.getTime();
+        var settingTime = time.getTime();
+        var y = time.getFullYear();//year
+        var mm = time.getMonth()+1;//month
+        var d = time.getDate();//day
+        var dd = weekDay(time.getDay());//weekday
+        var h = time.getHours();//hours
+        var m = time.getMinutes();//minutes
+        var s = time.getSeconds();//seconds
+        mm = checkTime(mm);
+        d = checkTime(d);
+        h = checkTime(h);
+        m = checkTime(m);
+        s = checkTime(s);
+        var ms = Math.abs(currentTime-settingTime);//毫秒
+        var dx = (1000*60*60*24);//算天数的
+        var day = parseInt(ms/dx);//天数
+        var mms = ms-day*dx;
+        var hx = (1000*60*60);//算小时数的
+        var hour = parseInt((mms/hx));//小时
+        var hhs = mms-hour*hx;
+        var minute = parseInt(hhs/(1000*60));//分钟
+        var sss = hhs- minute*(1000*60);//算秒的
+        var second = parseInt(sss/(1000));//秒
+        if(currentTime>settingTime)
+            result.innerHTML = "现在距离"+y+"年"+mm+"月"+d+"日"+dd+" "+h+":"+m+":"+s+" "+ "已经过去" + day+"天"+hour+"时"+minute+"分"+second+"秒";
+        if(currentTime<=settingTime)
+            result.innerHTML = "现在距离" +y+"年"+mm+"月"+d+"日"+dd+" "+h+":"+m+":"+s+" "+ "还有" + day+"天"+hour+"时"+minute+"分"+second+"秒";
+    }
+    
+   
+</script>
+</body>
+</html>

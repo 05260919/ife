@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+</head>
+
+<body>
+    <div id="parent" style="background-color: #000;height: 400px;width: 400px" data-id="444">
+        <div id="child" style="background-color: #fff;height: 200px;width: 200px" data-id="555"></div>
+    </div>
+    <script>
+         document.getElementById('parent').onclick=function () {
+        console.log(this.getAttribute('data-id'));
+    };
+    document.getElementById('child').onclick=function (ev) {
+        var e = ev||window.event;//<span style="color:#FF0000;">IE中event可以通过window.event随时取到，而其他浏览器需要通过参数传递</span>
+        console.log(this.getAttribute('data-id'));
+        stopPropagation(e);
+    };
+    function stopPropagation(e) {
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        } else {
+            e.cancelBubble = true;
+        }
+    }
+
+
+    </script>
+</body>
+
+</html>

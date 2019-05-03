@@ -1,0 +1,57 @@
+<p id='show'></p>
+
+<script>
+
+    //返回星期几
+    function getWeek(a) {
+        var arr = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+        return arr[a];
+    }
+    function getEnWeek(a) {
+        var arr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return arr[a];
+    }
+    //补0操作
+    function addZero(a) {
+        if (a < 10) {
+            return '0' + a;
+        }
+        else {
+            return a;
+        }
+    }
+    function amOrpm(a){
+        var time;
+        if(a>12){
+            time=a-12;
+        }
+        else{
+            time=a;
+        }
+        return time;
+
+    }
+
+    //返回结果
+    function startTime() {
+        var p = document.getElementById('show');
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth();
+        var day = now.getDate();
+        var weekDay = getEnWeek(now.getDay());
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+        // p.innerHTML = year + '年' + (month + 1) + '月' + day + '日' + weekDay + ' ' + hours + ':' + addZero(minutes) + ':' + addZero(seconds);
+      
+       if(hours>12)
+       p.innerHTML = year + '-' + (month + 1) + '-' + day +' ' + weekDay + ' ' + addZero(hours-12) + ':' + addZero(minutes) + ':' + addZero(seconds)+'pm'; 
+       else{
+        p.innerHTML = year + '-' + (month + 1) + '-' + day +' ' + weekDay + ' ' +addZero(hours ) + ':' + addZero(minutes) + ':' + addZero(seconds)+'am'; 
+       } 
+       t = setTimeout('startTime()', 1000);
+    }
+    startTime();
+
+</script>
